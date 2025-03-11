@@ -75,12 +75,11 @@ export async function getBooking(id) {
 export async function getBookings(guestId) {
     const { data, error, count } = await supabase
         .from("bookings")
-        // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
         .select(
-            "id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)"
+            "id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestID, cabinID, cabins(name, image)"
         )
-        .eq("guestId", guestId)
-        .order("startDate");
+        .eq("guestID", guestId)
+        .order("startDate", { ascending: false });
 
     if (error) {
         console.error(error);
@@ -213,15 +212,15 @@ export async function updateBooking(id, updatedFields) {
 /////////////
 // DELETE
 
-export async function deleteBooking(id) {
-    const { data, error } = await supabase
-        .from("bookings")
-        .delete()
-        .eq("id", id);
+// export async function deleteBooking(id) {
+//     const { data, error } = await supabase
+//         .from("bookings")
+//         .delete()
+//         .eq("id", id);
 
-    if (error) {
-        console.error(error);
-        throw new Error("Booking could not be deleted");
-    }
-    return data;
-}
+//     if (error) {
+//         console.error(error);
+//         throw new Error("Booking could not be deleted");
+//     }
+//     return data;
+// }
