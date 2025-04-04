@@ -224,3 +224,21 @@ export async function updateBooking(id, updatedFields) {
 //     }
 //     return data;
 // }
+
+export async function keepSupabaseAlive() {
+    try {
+        // Sending a simple request to a lightweight endpoint
+        const { data, error } = await supabase
+            .from("settings")
+            .select("id")
+            .limit(1);
+
+        if (error) {
+            console.error("Keep-alive request failed:", error);
+        } else {
+            console.log("Supabase keep-alive request successful");
+        }
+    } catch (err) {
+        console.error("Error in keepSupabaseAlive:", err);
+    }
+}
